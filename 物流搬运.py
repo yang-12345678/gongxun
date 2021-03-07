@@ -2,6 +2,7 @@
 
 import sensor, image, time, math
 from pyb import UART
+import pyb
 
 red = (0,52,-128,127,21,127)  # 红色阈值
 green =(0,100,-33,-48,-128,127)  # 绿色阈值
