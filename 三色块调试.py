@@ -5,7 +5,7 @@ from pyb import UART
 import pyb
 
 red = (0, 100, 4, 127, 24, 127)  # 红色阈值
-green =(0,100,-33,-48,-128,127)  # 绿色阈值
+green =(0, 100, -128, -22, -128, 127) # 绿色阈值
 blue = (0, 43, -128, 127, -9, -32)  # 蓝色阈值
 
 
@@ -26,7 +26,7 @@ def sekuai():
         gl.clear()
         bl.clear()
         img = sensor.snapshot()  # 拍摄一张照片，img为一个image对象
-        for blob in img.find_blobs([red,green,blue],merge=False, pixels_threshold=200, area_threshold=200):
+        for blob in img.find_blobs([red,green,blue],merge=False, pixels_threshold=600, area_threshold=1100):
 
             img.draw_rectangle(blob.rect())
             img.draw_cross(blob.cx(), blob.cy())
@@ -34,65 +34,79 @@ def sekuai():
             if blob.code() == 1:  # 红
                 #rl.append(blob.cy())
                 rl.append(blob.cx())
+                #print("hong")
+                #print(blob.area())
             if blob.code() == 2:  # 绿
                 #gl.append(blob.cy())
+                #print("lv")
                 gl.append(blob.cx())
+                #print(blob.area())
             if blob.code() == 4:  # 蓝
                 #bl.append(blob.cy())
                 bl.append(blob.cx())
+                #print("lan")
+                #print(blob.area())
+
 
         if len(rl) == 1 and len(gl) == 1 and len(bl) == 1:
-            #if rl[0] < rl[2]:
-                #rux = rl[1]
-                #rdx = rl[3]
-            #else:
-                #rux = rl[3]
-                #rdx = rl[1]
-            #if gl[0] < gl[2]:
-                #gux = gl[1]
-                #gdx = gl[3]
-            #else:
-                #gux = rl[3]
-                #gdx = rl[1]
-            #if bl[0] < bl[2]:
-                #bux = bl[1]
-                #bdx = bl[3]
-            #else:
-                #bux = rl[3]
-                #bdx = rl[1]
             rux = rl[0]
             gux = gl[0]
             bux = bl[0]
-            uart1 = UART(3, 115200)
+            #uart1 = UART(3, 115200)
             if gux < bux and bux < rux and gux < rux:
-                uart1.write("123\n")
-            if rdx < bdx and bdx < gdx and rdx < gdx:
-                uart1.write("312\n")
-            if rux < bux and bux < gux and rux < gux:
-                uart1.write("132\n")
+                #uart1.write("123\n")
+                return "231"
+            if bux < rux and rux < gux and bux < gux:
+                #uart1.write("312\n")
+                return "312"
+            if rux < gux and gux < bux and rux < bux:
+                #uart1.write("132\n")
+                return "123"
             if gux < rux and rux < bux and gux < bux:
-                uart1.write("213\n")
-            if gux < bux and bux < rux and gux < rux:
-                uart1.write("231\n")
+                #uart1.write("213\n")
+                return "213"
+            if rux < bux and bux < gux and rux < gux:
+                #uart1.write("231\n")
+                return "123"
             if bux < gux and gux < rux and bux < rux:
-                uart1.write("321\n")
+                #uart1.write("321\n")
+                return "321"
 
-
+led1 = pyb.LED(1)
+led2 = pyb.LED(2)
+led3 = pyb.LED(3)
 uart = UART(3, 115200)
 while(True):
     if uart.any():
         a = uart.read().decode()
         if a == "start!":
-            #print(a)
-            led1 = pyb.LED(1)
-            led1.on()
-            time.sleep_ms(150)
-            led1.off()
-            led1.on()
-            time.sleep_ms(150)
-            led1.off()
-            uart.write("123\n")
 
+            led1.on()
+            time.sleep_ms(250)
+            led2.on()
+            time.sleep_ms(250)
+            led2.off()
+            led1.off()
+            led1.on()
+            time.sleep_ms(250)
+            led2.on()
+            time.sleep_ms(250)
+            led2.off()
+            led1.off()
+            str_uart = sekuai()
+            uart.write(str_uart)
+            led1.on()
+            time.sleep_ms(250)
+            led2.on()
+            time.sleep_ms(250)
+            led2.off()
+            led1.off()
+            led1.on()
+            time.sleep_ms(250)
+            led2.on()
+            time.sleep_ms(250)
+            led2.off()
+            led1.off()
 
 
 
