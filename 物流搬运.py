@@ -4,9 +4,9 @@ import sensor, image, time, math
 from pyb import UART
 import pyb
 
-red = (0,52,-128,127,21,127)  # 红色阈值
-green =(0,100,-33,-48,-128,127)  # 绿色阈值
-blue = (44,100,-128,127,-128,-25)  # 蓝色阈值
+red = (0, 19, 3, 127, -128, 127)  # 红色阈值
+green =(0, 36, -128, -29, -128, 127) # 绿色阈值
+blue = (15, 37, -15, 127, -128, -13)  # 蓝色阈值
 
 
 # 设置摄像头
@@ -22,11 +22,12 @@ def sekuai():
     gl = []
     bl = []
     while(True):
+        number = 0
         rl.clear()
         gl.clear()
         bl.clear()
         img = sensor.snapshot()  # 拍摄一张照片，img为一个image对象
-        for blob in img.find_blobs([red,green,blue],merge=False, pixels_threshold=200, area_threshold=200):
+        for blob in img.find_blobs([red,green,blue],merge=False, pixels_threshold=130, area_threshold=265):
 
             img.draw_rectangle(blob.rect())
             img.draw_cross(blob.cx(), blob.cy())
@@ -62,21 +63,87 @@ def sekuai():
                 bdx = rl[1]
 
             uart1 = UART(3, 19200)
-            if gux < bux and bux < rux and gux < rux:
-                uart1.write("123+")
+            str=""
+            # 123
+            if rux < gux and gux < bux and rux < bux:
+                str+="123"
+            if rdx < gdx and gdx < bdx and rdx < bdx:
+                str+="123\n"
+            # 132
+            if rux < bux and bux < gux and rux < gux:
+                str+="132"
             if rdx < bdx and bdx < gdx and rdx < gdx:
+                str+="132\n"
+            # 213
+            if gux < rux and rux < bux and gux < bux:
+                str+="213"
+            if gdx < rdx and rdx < bdx and gdx < bdx:
+                str+="213\n"
+            # 231
+            if gux < bux and bux < rux and gux < rux:
+                str+="231"
+            if gdx < bdx and bdx < rdx and gdx < rdx:
+                str+="231\n"
+            # 312
+            if bux < rux and rux < gux and bux < gux:
+                str+="312"
+            if bdx < rdx and rdx < gdx and bdx < gdx:
+                str+="312\n"
+            # 321
+            if bux < gux and gux < rux and bux < rux:
+                str+="321"
+            if bdx < gdx and gdx < rdx and bdx < rdx:
+                str+="321\n"
+            return str
+        else:
+            i+=1
+            time.sleep_ms(250)
+        if i == 12:
+            if len(rl) == len(bl) == 4:
+                if rl[0] < rl[2]:
+                    ru = rl[1]
+                    rd = rl[3]
+                else:
+                    ru = rl[3]
+                    rd = rl[1]
 
-                uart1.write("312\n")
+
+
 
 
 uart = UART(3, 19200)
 while(True):
     if uart.any():
         a = uart.read().decode()
-        if a == "start":
-            print(a)
-            sekuai()
+        if a == "start!":
+            led1.on()
+            time.sleep_ms(250)
+            led2.on()
+            time.sleep_ms(250)
+            led2.off()
+            led1.off()
+            led1.on()
+            time.sleep_ms(250)
+            led2.on()
+            time.sleep_ms(250)
+            led2.off()
+            led1.off()
 
+            str_uart = sekuai()
+            uart.write(str_uart)
+
+            led1.on()
+            time.sleep_ms(250)
+            led2.on()
+            time.sleep_ms(250)
+            led2.off()
+            led1.off()
+            led1.on()
+            time.sleep_ms(250)
+            led2.on()
+            time.sleep_ms(250)
+            led2.off()
+            led1.off()
 
 
 
