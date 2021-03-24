@@ -26,7 +26,7 @@ def sekuai():
         gl.clear()
         bl.clear()
         img = sensor.snapshot()  # 拍摄一张照片，img为一个image对象
-        for blob in img.find_blobs([red,green,blue],merge=False, pixels_threshold=600, area_threshold=1100):
+        for blob in img.find_blobs([red,green,blue],merge=False, pixels_threshold=450, area_threshold=1000):
 
             img.draw_rectangle(blob.rect())
             img.draw_cross(blob.cx(), blob.cy())
@@ -55,22 +55,22 @@ def sekuai():
             #uart1 = UART(3, 115200)
             if gux < bux and bux < rux and gux < rux:
                 #uart1.write("123\n")
-                return "231"
+                return "231\n"
             if bux < rux and rux < gux and bux < gux:
                 #uart1.write("312\n")
-                return "312"
+                return "312\n"
             if rux < gux and gux < bux and rux < bux:
                 #uart1.write("132\n")
-                return "123"
+                return "123\n"
             if gux < rux and rux < bux and gux < bux:
                 #uart1.write("213\n")
-                return "213"
+                return "213\n"
             if rux < bux and bux < gux and rux < gux:
                 #uart1.write("231\n")
-                return "123"
+                return "132\n"
             if bux < gux and gux < rux and bux < rux:
                 #uart1.write("321\n")
-                return "321"
+                return "321\n"
 
 led1 = pyb.LED(1)
 led2 = pyb.LED(2)
@@ -107,8 +107,6 @@ while(True):
             time.sleep_ms(250)
             led2.off()
             led1.off()
-
-
 
 
 
