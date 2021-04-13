@@ -17,12 +17,18 @@ sensor.skip_frames(time = 800)
 #sensor.set_auto_gain(False) # 关闭自动增益
 #sensor.set_auto_whitebal(False) # 关闭白平衡
 
+def reverse(str_yanse):
+    str0 = str_yanse[0]
+    str1 = str_yanse[1]
+    str2 = str_yanse[2]
+    str3 = str_yanse[2] + str_yanse[1] + str_yanse[0]
+    return str3
+
 
 def sekuai():
     rl = []
     gl = []
     bl = []
-    i=0
     while(True):
         rl.clear()
         gl.clear()
@@ -50,6 +56,9 @@ def sekuai():
                 #print(blob.area())
 
 
+        #if len(rl) == 1 and len(bl) == 1 and len(gl) == 1:
+            #max = rl[0] - bl[0]
+            #print(max)
         if len(rl) == 1 and len(gl) == 1 and len(bl) == 1:
             rux = rl[0]
             gux = gl[0]
@@ -57,74 +66,67 @@ def sekuai():
             #uart1 = UART(3, 115200)
             if gux < bux and bux < rux and gux < rux:
 
-                return "231\n"
-                #print(reverse("231"))
+                #return "231\n"
+                print(reverse("231"))
             if bux < rux and rux < gux and bux < gux:
 
-                return "312\n"
-                #print(reverse("312"))
+                #return "312\n"
+                print(reverse("312"))
             if rux < gux and gux < bux and rux < bux:
 
-                #str="123"
-                #print(reverse(str))
-                return "123\n"
+                str="123"
+                print(reverse(str))
+                #return "123\n"
             if gux < rux and rux < bux and gux < bux:
 
-                #print(reverse("213"))
-                return "213\n"
+                print(reverse("213"))
+                #return "213\n"
             if rux < bux and bux < gux and rux < gux:
 
-                #print(reverse("132"))
-                return "132\n"
+                print(reverse("132"))
+                #return "132\n"
             if bux < gux and gux < rux and bux < rux:
 
-                return "321\n"
-                #print(reverse("321"))
-        else:
-            i=i+1
-            time.sleep_ms(1000)
-        if i==5:
-            return "213"
-
+                #return "321\n"
+                print(reverse("321"))
 
 led1 = pyb.LED(1)
 led2 = pyb.LED(2)
 led3 = pyb.LED(3)
 uart = UART(3, 115200)
-while(True):
-    if uart.any():
-        a = uart.read().decode()
-        if a == "start!":
+#while(True):
+    #if uart.any():
+        #a = uart.read().decode()
+        #if a == "start!":
 
-            led1.on()
-            time.sleep_ms(250)
-            led2.on()
-            time.sleep_ms(250)
-            led2.off()
-            led1.off()
-            led1.on()
-            time.sleep_ms(250)
-            led2.on()
-            time.sleep_ms(250)
-            led2.off()
-            led1.off()
-            str_uart = sekuai()
+            #led1.on()
+            #time.sleep_ms(250)
+            #led2.on()
+            #time.sleep_ms(250)
+            #led2.off()
+            #led1.off()
+            #led1.on()
+            #time.sleep_ms(250)
+            #led2.on()
+            #time.sleep_ms(250)
+            #led2.off()
+            #led1.off()
+            #str_uart = sekuai()
             #uart.write(str_uart)
-            print(str_uart)
-            led1.on()
-            time.sleep_ms(250)
-            led2.on()
-            time.sleep_ms(250)
-            led2.off()
-            led1.off()
-            led1.on()
-            time.sleep_ms(250)
-            led2.on()
-            time.sleep_ms(250)
-            led2.off()
-            led1.off()
-#while True:
-    #print(sekuai())
+            #led1.on()
+            #time.sleep_ms(250)
+            #led2.on()
+            #time.sleep_ms(250)
+            #led2.off()
+            #led1.off()
+            #led1.on()
+            #time.sleep_ms(250)
+            #led2.on()
+            #time.sleep_ms(250)
+            #led2.off()
+            #led1.off()
+while True:
+    print(sekuai())
 
 
 
