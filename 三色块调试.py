@@ -4,9 +4,9 @@ import sensor, image, time, math
 from pyb import UART
 import pyb
 
-red = (0, 100, 55, 127, -128, 127) # 红色阈值
-green = (0, 100, -128, -34, -128, 127)# 绿色阈值
-blue = (0, 100, -128, 127, -128, -45)  # 蓝色阈值
+red = (0, 100, 27, 127, -128, 127) # 红色阈值
+green = (0, 53, -24, -47, -128, 127)# 绿色阈值
+blue = (56, 22, -128, 127, -20, -70)  # 蓝色阈值
 
 
 # 设置摄像头
@@ -28,7 +28,7 @@ def sekuai():
         gl.clear()
         bl.clear()
         img = sensor.snapshot()  # 拍摄一张照片，img为一个image对象
-        for blob in img.find_blobs([red,green,blue],merge=False, pixels_threshold=200 ,area_threshold=300):
+        for blob in img.find_blobs([red,green,blue],merge=False, pixels_threshold=200 ,area_threshold=466):
 
             img.draw_rectangle(blob.rect())
             img.draw_cross(blob.cx(), blob.cy())
@@ -36,18 +36,21 @@ def sekuai():
             if blob.code() == 1:  # 红
                 #rl.append(blob.cy())
                 rl.append(blob.cx())
-                #print("hong")
-                #print(blob.area())
+                print("hong")
+                print(blob.area())
+                print(blob.pixels())
             if blob.code() == 2:  # 绿
                 #gl.append(blob.cy())
-                #print("lv")
+                print("lv")
                 gl.append(blob.cx())
-                #print(blob.area())
+                print(blob.area())
+                print(blob.pixels())
             if blob.code() == 4:  # 蓝
                 #bl.append(blob.cy())
                 bl.append(blob.cx())
-                #print("lan")
-                #print(blob.area())
+                print("lan")
+                print(blob.area())
+                print(blob.pixels())
 
 
         if len(rl) == 1 and len(gl) == 1 and len(bl) == 1:
@@ -83,7 +86,8 @@ def sekuai():
         else:
             i=i+1
             time.sleep_ms(1000)
-        if i==5:
+        if i>5:
+            print("**************")
             return "213"
 
 
@@ -109,8 +113,8 @@ while(True):
             led2.off()
             led1.off()
             str_uart = sekuai()
-            #uart.write(str_uart)
-            print(str_uart)
+            uart.write(str_uart)
+            #print(str_uart)
             led1.on()
             time.sleep_ms(250)
             led2.on()
