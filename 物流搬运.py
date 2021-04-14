@@ -97,19 +97,10 @@ def sekuai():
             return str
         else:
             i+=1
-            time.sleep_ms(250)
-        if i == 12:
-            if len(rl) == len(bl) == 4:
-                if rl[0] < rl[2]:
-                    ru = rl[1]
-                    rd = rl[3]
-                else:
-                    ru = rl[3]
-                    rd = rl[1]
-
-
-
-
+            time.sleep_ms(1000)
+        if i > 5:
+            print("*********")
+            return "213+213"
 
 uart = UART(3, 19200)
 while(True):
