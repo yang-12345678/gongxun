@@ -4,15 +4,16 @@ import sensor, image, time, math
 from pyb import UART
 import pyb
 
-red = (0, 100, 27, 127, -128, 127) # 红色阈值
-green = (0, 53, -24, -47, -128, 127)# 绿色阈值
-blue = (56, 22, -128, 127, -20, -70)  # 蓝色阈值
+red = (0, 33, 32, 127, -128, 127) # 红色阈值
+green = (0, 100, -128, -21, -128, 127)# 绿色阈值
+blue = (0, 45, -128, 12, -128, -30) # 蓝色阈值
 
 
 # 设置摄像头
 sensor.reset()  # 初始化感光元件
 sensor.set_pixformat(sensor.RGB565)  # 设置为彩色模式
 sensor.set_framesize(sensor.QVGA)   # 设置图像的大小
+#sensor.set_windowing((640, 80))
 sensor.skip_frames(time = 800)
 #sensor.set_auto_gain(False) # 关闭自动增益
 #sensor.set_auto_whitebal(False) # 关闭白平衡
@@ -28,7 +29,7 @@ def sekuai():
         gl.clear()
         bl.clear()
         img = sensor.snapshot()  # 拍摄一张照片，img为一个image对象
-        for blob in img.find_blobs([red,green,blue],merge=False, pixels_threshold=200 ,area_threshold=466):
+        for blob in img.find_blobs([red,green,blue],merge=False, pixels_threshold=290 ,area_threshold=400):
 
             img.draw_rectangle(blob.rect())
             img.draw_cross(blob.cx(), blob.cy())
@@ -88,7 +89,7 @@ def sekuai():
             time.sleep_ms(1000)
         if i>5:
             print("**************")
-            return "213"
+            return "213\n"
 
 
 led1 = pyb.LED(1)
