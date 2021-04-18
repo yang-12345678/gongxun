@@ -4,9 +4,9 @@ import sensor, image, time, math
 from pyb import UART
 import pyb
 
-red = (0, 33, 32, 127, -128, 127) # 红色阈值
-green = (0, 100, -128, -21, -128, 127)# 绿色阈值
-blue = (0, 45, -128, 12, -128, -30) # 蓝色阈值
+red = (0, 100, 24, 127, -128, 127) # 红色阈值
+green = (0, 36, -128, -15, -28, 16)
+blue = (0, 100, -128, 127, -128, -28) # 蓝色阈值
 
 
 # 设置摄像头
@@ -18,6 +18,7 @@ sensor.skip_frames(time = 800)
 #sensor.set_auto_gain(False) # 关闭自动增益
 #sensor.set_auto_whitebal(False) # 关闭白平衡
 
+roi = (75, 56, 186, 54)
 
 def sekuai():
     rl = []
@@ -29,7 +30,8 @@ def sekuai():
         gl.clear()
         bl.clear()
         img = sensor.snapshot()  # 拍摄一张照片，img为一个image对象
-        for blob in img.find_blobs([red,green,blue],merge=False, pixels_threshold=290 ,area_threshold=400):
+        img.draw_rectangle(roi)
+        for blob in img.find_blobs([red,green,blue],merge=False, pixels_threshold=290 ,area_threshold=400, roi=roi):
 
             img.draw_rectangle(blob.rect())
             img.draw_cross(blob.cx(), blob.cy())
@@ -96,40 +98,50 @@ led1 = pyb.LED(1)
 led2 = pyb.LED(2)
 led3 = pyb.LED(3)
 uart = UART(3, 115200)
-while(True):
-    if uart.any():
-        a = uart.read().decode()
-        if a == "start!":
+#while(True):
+    #if uart.any():
+        #a = uart.read().decode()
+        #if a == "start!":
 
-            led1.on()
-            time.sleep_ms(250)
-            led2.on()
-            time.sleep_ms(250)
-            led2.off()
-            led1.off()
-            led1.on()
-            time.sleep_ms(250)
-            led2.on()
-            time.sleep_ms(250)
-            led2.off()
-            led1.off()
-            str_uart = sekuai()
-            uart.write(str_uart)
-            #print(str_uart)
-            led1.on()
-            time.sleep_ms(250)
-            led2.on()
-            time.sleep_ms(250)
-            led2.off()
-            led1.off()
-            led1.on()
-            time.sleep_ms(250)
-            led2.on()
-            time.sleep_ms(250)
-            led2.off()
-            led1.off()
-#while True:
-    #print(sekuai())
+            #led1.on()
+            #time.sleep_ms(250)
+            #led2.on()
+            #time.sleep_ms(250)
+            #led2.off()
+            #led1.off()
+            #led1.on()
+            #time.sleep_ms(250)
+            #led2.on()
+            #time.sleep_ms(250)
+            #led2.off()
+            #led1.off()
+            #str_uart = sekuai()
+            #uart.write(str_uart)
+            ##print(str_uart)
+            #led1.on()
+            #time.sleep_ms(250)
+            #led2.on()
+            #time.sleep_ms(250)
+            #led2.off()
+            #led1.off()
+            #led1.on()
+            #time.sleep_ms(250)
+            #led2.on()
+            #time.sleep_ms(250)
+            #led2.off()
+            #led1.off()
+while True:
+
+
+
+
+
+
+
+
+
+    print(sekuai())
+
 
 
 
